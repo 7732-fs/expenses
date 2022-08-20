@@ -1,0 +1,4 @@
+expenses/users.db-journal
+expenses/expenses_api/__pycache__/__init__.cpython-310.pyc
+expenses/expenses_api/__pycache__/views.cpython-310.pyc
+expenses/expenses_api/__pycache__/*.pyc

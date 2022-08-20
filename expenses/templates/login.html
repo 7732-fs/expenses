@@ -1,0 +1,12 @@
+{% extends "minimal.html" %}
+{% block title %}
+<h2>Login</h2>
+{% endblock %}
+{% block form %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}<p>
+            <input type="submit" value="Login">
+        </form> 
+{% endblock %}
+

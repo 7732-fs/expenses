@@ -1,13 +1,18 @@
 
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
-from expenses_api.forms import ExpenseForm
+from expenses_api.forms import ExpenseForm, LoginForm
 from expenses_api.models import Expense
 from faker import Faker
 import random
 
 reverse_it=True
 sort_param=""
+
+
+def login(request):
+    loginform=LoginForm()
+    return render(request,"login.html",{"form":loginform})
 
 def index(request):
     return render(request,'index.html')
