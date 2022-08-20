@@ -87,9 +87,9 @@ def display(request,message=''):
         return HttpResponse('Unauthorized', status=401)
     
 def analysis(request):
-    dates=Expense.objects.all().order_by('date')
+    dates=Expense.objects.filter(user_id=request.session.get("id")).order_by('date')
     size=len(dates)
-    return render(request,"analysis.html",{'dates':dates[size-7:size]})
+    return render(request,"analysis.html",{'dates':dates})
 
 def search(request):
     form=ExpenseForm(request.POST)
