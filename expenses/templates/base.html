@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/holiday.css@0.9.8" />
+    </head>
+    <body>
+        <h1>Expenses App</h1>
+        {% block menu %}
+        <nav>
+            <ul>
+            <li><a href="/expenses/add">Add Expense</a>
+            <li><a href="/expenses/display">Display Expenses</a>
+            <li><a href="/expenses/analysis">Analyze Expense</a>
+            </ul>
+        </nav>
+        {% endblock %}
+
+        {% block title %}        {% endblock %}
+        {% block table %}        {% endblock %}
+        {% block form %}        {% endblock %}
+        {% block analysis %}        {% endblock %}
+        <p>
+        Please support our site
+    </body>
+
+</html>

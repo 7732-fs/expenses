@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block analysis %}
+<canvas id="myCanvas" width="700" height="150" style="border:1px solid #000000;"></canvas>
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "green";
+//ctx.fillRect(0, 0, 1500, 750);
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.moveTo(0, 100);
+var i=100;
+var j=0
+ctx.font = "12px Arial";
+{% for d in dates %}
+    ctx.lineTo(i, 150-{{d.amount}}/10);
+    ctx.moveTo(i, 150-{{d.amount}}/10);
+    ctx.fillText("{{d.amount}}", i, 150-{{d.amount}}/10);
+    ctx.fillText("{{d.date}}", j, 150);
+    i+=100;
+    j+=100
+{% endfor %}
+    
+ctx.stroke();
+</script>
+
+{% endblock %}

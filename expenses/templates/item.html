@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+<h2> {{ item }}</h2>
+<style>
+    .box1{background: lightgreen;}
+    .box2{background: greenyellow}
+    .box3{background:lightsalmon;}
+    
+    .container{
+       display:flex;
+       width: 50%;
+       flex-direction: row;
+       flex-wrap: wrap;
+    }
+    .box{
+       font-size:35px;
+       padding:15px;
+    }
+ </style>
+ 
+ <body>
+    <div class = "container">
+       <div class = "box box1">{{item.category}}</div>
+       <div class = "box box2">{{item.amount}}$</div>
+       <div class = "box box3">{{item.date}}</div>
+    </div>
+
+{% endblock %}
+

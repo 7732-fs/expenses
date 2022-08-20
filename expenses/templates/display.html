@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+{% block title %}
+<h1> My Expenses</h1>
+<form action="/search/" method="POST">Search: <input name='q' autofocus></form>
+{{ message|default:'' }}
+{% endblock %}
+{% block table %}
+<script>
+    function changeColor(id,color){
+        document.getElementById(id).style.backgroundColor=color;
+    }
+</script>
+<table>
+    <tr><th><a href='/expenses/sort?sort_by=date'>Date</a></th>
+    <th><a href='/expenses/sort?sort_by=name'>Name</a></th>
+    <th><a href='/expenses/sort?sort_by=category'>Category</a></th>
+    <th><a href='/expenses/sort?sort_by=amount'>Amount</a></th></tr>
+    {% for e in expenses %}
+    <tr id={{e.id}} onclick="window.open('/expenses/view_item?id={{e.id}}', '_self')" onmouseover="changeColor({{e.id}},'green')" onmouseout="changeColor({{e.id}},'white')">
+        <td>{{ e.date }}</td>
+        <td>{{ e.name }}</td>
+        <td>{{ e.category }}</td>
+        <td>{{ e.amount }}$</td>
+        <td><form method='POST' action='/expenses/remove/'><input type='hidden' name='id' value='{{ e.id }}'><input type="submit" value="Remove"></form></td>
+    </tr>   
+    {% endfor %}
+</table>
+{% endblock %}
