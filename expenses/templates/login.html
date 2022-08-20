@@ -3,7 +3,7 @@
 <h2>Login</h2>
 {% endblock %}
 {% block form %}
-        <form method="POST">
+        <form method="POST" action='/expenses/login/'>
             {% csrf_token %}
             {{ form }}<p>
             <input type="submit" value="Login">

@@ -1,21 +1,35 @@
 
-from django.shortcuts import render
+from telnetlib import STATUS
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from expenses_api.forms import ExpenseForm, LoginForm
 from expenses_api.models import Expense
 from faker import Faker
 import random
+import sqlite3
 
 reverse_it=True
 sort_param=""
 
 
-def login(request):
-    loginform=LoginForm()
-    return render(request,"login.html",{"form":loginform})
-
 def index(request):
     return render(request,'index.html')
+
+def login(request):
+    if request.method=='POST':
+        loginform=LoginForm(request.POST)
+        username=loginform.data["username"]
+        password=loginform.data["password"]
+        con=sqlite3.connect('users.db')
+        cur=con.cursor()
+        rs=cur.execute(f"select * from users where name='{username}' and password='{password}'")
+        if len(list(rs))>0:
+            return redirect('index')
+        else:
+            return HttpResponse('Unauthorized', status=401)
+    else:
+        loginform=LoginForm()
+        return render(request,"login.html",{"form":loginform})
 
 def view_item(request):
     item=Expense.objects.get(id=request.GET["id"])

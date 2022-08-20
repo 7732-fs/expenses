@@ -5,7 +5,7 @@ from expenses_api import views
 
 
 urlpatterns = [
-    path('', views.display),
+    path('', views.display, name='index'),
     path('admin/', admin.site.urls),
     path('expenses/', include('expenses_api.urls')),
 ]
