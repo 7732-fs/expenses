@@ -5,7 +5,7 @@ from expenses_api import views
 urlpatterns = [
     path('', views.login),
     path('add/', views.add),
-    path('display/', views.display),
+    path('display/', views.display,name='display'),
     path('analysis/', views.analysis),
     path('remove/', views.remove),
     path('sort/', views.sort),

@@ -1,5 +1,4 @@
 
-from telnetlib import STATUS
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from expenses_api.forms import ExpenseForm, LoginForm
@@ -13,7 +12,10 @@ sort_param=""
 
 
 def index(request):
-    return render(request,'index.html')
+    if request.session:
+        return render(request,'index.html')
+    else:
+        return HttpResponse('Unauthorized', status=401)
 
 def login(request):
     if request.method=='POST':
@@ -23,8 +25,10 @@ def login(request):
         con=sqlite3.connect('users.db')
         cur=con.cursor()
         rs=cur.execute(f"select * from users where name='{username}' and password='{password}'")
-        if len(list(rs))>0:
-            return redirect('index')
+        row=rs.fetchone()
+        if row:
+            request.session["user"]=row[0]
+            return redirect('display')
         else:
             return HttpResponse('Unauthorized', status=401)
     else:
@@ -73,10 +77,13 @@ def add(request):
         return render(request,"add.html", {'form':form})
 
 def display(request,message=''):
-    #expenses=Expense.objects.order_by('date')
-    expenses=Expense.objects.all().order_by('-date')
-    return render(request,"display.html", {'expenses':expenses,'message':message})
-
+    if request.session.get("user"):
+        expenses=Expense.objects.all().order_by('-date')
+        return render(request,"display.html", {'expenses':expenses,'message':message})
+    else:
+        return HttpResponse('Unauthorized', status=401)
+#expenses=Expense.objects.order_by('date')
+    
 def analysis(request):
     #prices=Expense.objects.all().order_by('-amount')
     dates=Expense.objects.all().order_by('date')
