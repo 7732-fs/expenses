@@ -27,7 +27,10 @@ def login(request):
         rs=cur.execute(f"select * from users where name='{username}' and password='{password}'")
         row=rs.fetchone()
         if row:
-            request.session["user"]=row[0]
+            id=row[0]
+            name=row[1]
+            request.session["name"]=name
+            request.session["id"]=id
             return redirect('display')
         else:
             return HttpResponse('Unauthorized', status=401)
@@ -69,27 +72,23 @@ def add(request):
         date=form.data["date"]
         category=form.data["category"]
         amount=int(form.data["amount"])+random.randrange(1,50)
-        e=Expense(name=name,amount=amount,date=date,category=category)
+        id=request.session.get("id")
+        e=Expense(user_id=id,name=name,amount=amount,date=date,category=category)
         e.save()
         return display(request, "Added Successfully!")
-        # add return to display
     else:
         return render(request,"add.html", {'form':form})
 
 def display(request,message=''):
-    if request.session.get("user"):
-        expenses=Expense.objects.all().order_by('-date')
-        return render(request,"display.html", {'expenses':expenses,'message':message})
+    if request.session.get("id"):
+        expenses=Expense.objects.filter(user_id=request.session.get("id")).order_by('-date')
+        return render(request,"display.html", {'expenses':expenses,'message':message, "username":request.session.get("name")})
     else:
         return HttpResponse('Unauthorized', status=401)
-#expenses=Expense.objects.order_by('date')
     
 def analysis(request):
-    #prices=Expense.objects.all().order_by('-amount')
     dates=Expense.objects.all().order_by('date')
     size=len(dates)
-    #dates=dates[size-10:size+1]
-    #pd=zip(prices,dates)
     return render(request,"analysis.html",{'dates':dates[size-7:size]})
 
 def search(request):
